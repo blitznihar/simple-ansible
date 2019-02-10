@@ -1,0 +1,30 @@
+---
+- hosts: blitznihar4c.mylabserver.com
+  vars:
+    comment_text: "Hello  World!!!"
+  vars_files:
+    - ./vars/variables.yml
+  tasks:
+  - name: create a folder
+    file:  
+      path: "{{folder_path}}"
+      state: directory
+    tags: [folder, optional]
+  - name: create a file
+    file:
+      path: "{{ file_name }}"
+      state: touch 
+    tags: [files, optional]
+  - name: edit file
+    lineinfile: 
+      line: "{{comment_text}}"
+      path: "{{ file_name }}"
+    tags: [modify files, optional]
+    register: lif_info
+  - debug: msg="{{lif_info }}"
+    tags: [mandatory]
+  #- name: run a command
+    #become: yes
+    #file: 
+      #name: /mnt/d/develop/ansible/simple/playhere/hello.txt
+      #state: absent
